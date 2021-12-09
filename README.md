@@ -32,10 +32,10 @@ Write middleware functions in `api/schemes/scheme-middleware.js` following the i
 
 Write db access functions in `api/schemes/scheme-model.js` following the instructions inside that file:
 
-- [ ] `find`
-- [ ] `findById`
-- [ ] `findSteps`
-- [ ] `add`
+- [x] `find`
+- [x] `findById`
+- [x] `findSteps`
+- [x] `add`
 - [ ] `addStep`
 
 #### Schemes Schema
