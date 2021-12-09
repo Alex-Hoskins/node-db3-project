@@ -183,11 +183,11 @@ async function addStep(scheme_id, step) { // EXERCISE E
     const updatedSteps = await findSteps(scheme_id)
     return updatedSteps
 }
-async function getSchemeIds(id) { 
-  const rows = await db('schemes')
+async function getSchemeId(id) { 
+  const row = await db('schemes')
     .select('scheme_id')
     .where('scheme_id', id)
-    return rows
+    return row
 }
 
 module.exports = {
@@ -196,5 +196,5 @@ module.exports = {
   findSteps,
   add,
   addStep,
-  getSchemeIds,
+  getSchemeId,
 }

@@ -1,4 +1,5 @@
 const Schemes = require('./scheme-model.js')
+const db = require('../../data/db-config')
 /*
   If `scheme_id` does not exist in the database:
 
@@ -8,18 +9,24 @@ const Schemes = require('./scheme-model.js')
   }
 */
 const checkSchemeId = async (req, res, next) => {
-  // try{
-  //   const idMatch = await Schemes.getSchemeIds(req.params.scheme_id)
-  // console.log('from mw', idMatch)
-  // if (idMatch.scheme_id > 0) {
-  //   next()
-  // } else {
-  //   next({ message: `scheme with scheme_id ${req.params.scheme_id} not found`, status: 404 })
-  // }
-  // }catch(err){
-  //   next(err)
-  // }
-  next()
+ try{
+   const existing = await db('schemes')
+    .where('scheme_id', req.params.scheme_id)
+    .first()
+
+    if(!existing){
+      next({
+        status:404,
+        message:`scheme with scheme_id ${req.params.scheme_id} not found`
+      })
+    }
+    else{
+      next()
+    }
+ }
+ catch(err){
+   next(err)
+ }
 }
 
 /*
@@ -31,7 +38,29 @@ const checkSchemeId = async (req, res, next) => {
   }
 */
 const validateScheme = async (req, res, next) => {
-  next()
+  
+  try{
+    const name = req.body.scheme_name
+ 
+     if(!name){
+       next({
+         status:400,
+         message:`invalid scheme_name`
+       })
+     }
+     else if(typeof(name)!=='string'){
+      next({
+        status:400,
+        message:`invalid scheme_name`
+      })
+     }
+     else{
+       next()
+     }
+  }
+  catch(err){
+    next(err)
+  }
 }
 
 /*
@@ -44,7 +73,41 @@ const validateScheme = async (req, res, next) => {
   }
 */
 const validateStep = async (req, res, next) => {
-  next()
+  try{
+    const instructions = req.body.instructions
+    const step_number = req.body.step_number
+ 
+     if(!instructions){
+       next({
+         status:400,
+         message:`invalid step`
+       })
+     }
+     else if(typeof(instructions)!=='string'){
+      next({
+        status:400,
+        message:`invalid step`
+      })
+     }
+     else if(typeof(step_number)!=='number'){
+      next({
+        status:400,
+        message:`invalid step`
+      })
+     }
+     else if(step_number < 1){
+      next({
+        status:400,
+        message:`invalid step`
+      })
+     }
+     else{
+       next()
+     }
+  }
+  catch(err){
+    next(err)
+  }
 }
 
 module.exports = {
